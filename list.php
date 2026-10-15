@@ -9,19 +9,8 @@
 </head>
 
 <body>
-    <?php include 'components/connection.php';
-    $data = "SELECT * FROM  posts";
-    $raw_data = $connection->query($data);
-
-    while ($row = $raw_data->fetch_assoc()) {
-        $row["int"];
-        $row["title"];
-        $row["author"];
-        $row["viewer"];
-        $row["image"];
-    }
-    ?>
-    <?php include 'components/header.php' ?>
+    <?php include 'components/connection.php'; ?>;
+    <?php include 'components/header.php'; ?>
     <main class="container my-5">
         <div class="card">
             <div class="card-header">
@@ -44,61 +33,78 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>This is post title</td>
-                                <td>This is post author</td>
-                                <td><span class="badge bg-success">100</span></td>
-                                <td>2026-10-13</td>
-                                <td>
-                                    <a href="update.php" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="delete.php" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>This is post title</td>
-                                <td>This is post author</td>
-                                <td><span class="badge bg-success">85</span></td>
-                                <td>2026-10-12</td>
-                                <td>
-                                    <a href="update.php" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="delete.php" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>This is post title</td>
-                                <td>This is post author</td>
-                                <td><span class="badge bg-success">42</span></td>
-                                <td>2026-10-11</td>
-                                <td>
-                                    <a href="update.php" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="delete.php" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>This is post title</td>
-                                <td>This is post author</td>
-                                <td><span class="badge bg-success">210</span></td>
-                                <td>2026-10-10</td>
-                                <td>
-                                    <a href="update.php" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="delete.php" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>This is post title</td>
-                                <td>This is post author</td>
-                                <td><span class="badge bg-success">67</span></td>
-                                <td>2026-10-09</td>
-                                <td>
-                                    <a href="update.php" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="delete.php" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
+                            <!-- The cleanest way that I have found. I have learnt while(): and endwhile; here. -->
+                            <?php
+                            $data = "SELECT * FROM posts";
+                            $raw_data = $connection->query($data);
+                            $no = 0;
+
+                            while ($post = $raw_data->fetch_assoc()):
+                                $no++;
+                            ?>
+                                <tr>
+                                    <th scope="row"><?= $no; ?></th>
+                                    <td><?= $post["title"]; ?></td>
+                                    <td><?= $post["author"]; ?></td>
+                                    <td><span class="badge bg-success"><?= $post["viewer"]; ?></span></td>
+                                    <td><?= $post["created_at"]; ?></td>
+                                    <td>
+                                        <a href="update.php?id=<?= $post["id"]; ?>" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="delete.php?id=<?= $post["id"]; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            <?php
+                            endwhile;
+                            ?>
+
+
+                            <!-- This is the alternative way for the first one. It works well but still not a good practice. -->
+                            <!-- <?php
+                                    $data = "SELECT * FROM posts";
+                                    $raw_data = $connection->query($data);
+                                    $no = 0;
+
+                                    while ($post = $raw_data->fetch_assoc()) {
+                                        $no++;
+                                    ?>
+                                <tr>
+                                    <th scope="row"><?= $no; ?></th>
+                                    <td><?= $post['title']; ?></td>
+                                    <td><?= $post['author']; ?></td>
+                                    <td><span class="badge bg-success"><?= $post['viewer']; ?></span></td>
+                                    <td><?= $post['created_at']; ?></td>
+                                    <td>
+                                        <a href="update.php" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="delete.php" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                            <?php
+                                    }
+                            ?> -->
+
+
+                            <!-- This is not the ideal one as I wrap the whole table row with echo which looks messy and can cause unnecessary errors.  -->
+                            <!-- <?php $data = "SELECT * FROM  posts";
+                                    $raw_data = $connection->query($data);
+                                    $no = 0;
+
+                                    while ($post = $raw_data->fetch_assoc()) {
+                                        $no++;
+                                        echo "
+                                <tr>
+                                    <th scope='row'>{$no}</th>
+                                    <td>{$post["title"]}</td>
+                                    <td>{$post["author"]}</td>
+                                    <td><span class='badge bg-success'>{$post["viewer"]}</span></td>
+                                    <td>{$post["created_at"]}</td>
+                                    <td>
+                                        <a href='update.php' class='btn btn-warning btn-sm'>Edit</a>
+                                        <a href='delete.php' class='btn btn-danger btn-sm'>Delete</a>
+                                    </td>
+                                </tr>
+                                ";
+                                    }
+                                    ?> -->
                         </tbody>
                     </table>
                 </div>

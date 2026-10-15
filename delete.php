@@ -9,7 +9,19 @@
 </head>
 
 <body>
-    <?php include 'components/connection.php' ?>
+    <?php include 'components/connection.php';
+    $id = $_GET["id"];
+    $data = "SELECT * FROM posts WHERE id=$id";
+    $raw_data = $connection->query($data);
+    $post = $raw_data->fetch_assoc();
+
+    $delete = $_POST["delete"];
+    if (isset($delete)) {
+        $data = "DELETE FROM posts WHERE id=$id";
+        $connection->query($data);
+        header("location:list.php");
+    }
+    ?>
     <?php include 'components/header.php' ?>
     <main class="container my-5">
         <div class="row justify-content-center">
@@ -24,16 +36,16 @@
                         </div>
                         <dl class="row mb-0">
                             <dt class="col-sm-4">Title</dt>
-                            <dd class="col-sm-8">This is post title</dd>
+                            <dd class="col-sm-8"><?= $post["title"]; ?></dd>
                             <dt class="col-sm-4">Author</dt>
-                            <dd class="col-sm-8">This is post author</dd>
+                            <dd class="col-sm-8"><?= $post["author"]; ?></dd>
                             <dt class="col-sm-4">Created At</dt>
-                            <dd class="col-sm-8 mb-0">2026-10-13</dd>
+                            <dd class="col-sm-8 mb-0"><?= $post["created_at"]; ?></dd>
                         </dl>
                     </div>
                     <div class="card-footer">
-                        <form action="" class="d-flex gap-2">
-                            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        <form action="" method="post" class="d-flex gap-2">
+                            <button type="submit" name="delete" class="btn btn-danger">Yes, Delete</button>
                             <a href="list.php" class="btn btn-outline-secondary">Cancel</a>
                         </form>
                     </div>

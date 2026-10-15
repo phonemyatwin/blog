@@ -9,7 +9,25 @@
 </head>
 
 <body>
-    <?php include 'components/connection.php' ?>
+    <?php include 'components/connection.php';
+    $id = $_GET["id"];
+    $data = "SELECT * FROM posts WHERE id=$id";
+    $raw_data = $connection->query($data);
+    $post = $raw_data->fetch_assoc();
+
+    $update = $_POST["update"];
+    if(isset($update)){
+        $title = $_POST["title"];
+        $author = $_POST["author"];
+        $viewer = $_POST["viewer"];
+        $image = $_POST["image"];
+        $content = $_POST["content"];
+
+        $data= "UPDATE posts SET title = '$title', author = '$author', viewer = '$viewer', image = '$image', content = '$content' WHERE id=$id";
+        $connection -> query($data);
+        header("location:list.php");
+    }
+    ?>
     <?php include 'components/header.php' ?>
     <main class="container my-5">
         <div class="row justify-content-center">
@@ -22,30 +40,30 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form action="" method="post">
                             <div class="mb-3">
                                 <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" required>
+                                <input type="text" class="form-control" name="title" id="title" value="<?= $post["title"]; ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="author" class="form-label">Author</label>
-                                <input type="text" class="form-control" id="author" required>
+                                <input type="text" class="form-control" name="author" id="author" value="<?= $post["author"]; ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="viewer" class="form-label">Viewer</label>
-                                <input type="number" class="form-control" id="viewer" min="0" required>
+                                <input type="number" class="form-control" name="viewer" id="viewer" min="0" value="<?= $post["viewer"]; ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Image</label>
-                                <input type="file" class="form-control" id="image" accept="image/*">
+                                <input type="file" class="form-control" name="image" id="image" accept="image/*">
                                 <div class="form-text">Leave empty to keep the current image.</div>
                             </div>
                             <div class="mb-3">
                                 <label for="content" class="form-label">Content</label>
-                                <textarea class="form-control" id="content" rows="6" required></textarea>
+                                <textarea class="form-control" name="content" id="content" rows="6" required><?= $post["content"]; ?></textarea>
                             </div>
                             <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-dark">Update Post</button>
+                                <button type="submit" name="update" class="btn btn-dark">Update Post</button>
                                 <a href="list.php" class="btn btn-outline-secondary">Cancel</a>
                             </div>
                         </form>
