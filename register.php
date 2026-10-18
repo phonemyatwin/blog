@@ -9,8 +9,25 @@
 </head>
 
 <body>
-    <?php include 'components/connection.php' ?>
-    <?php include 'components/header.php' ?>
+    <?php include 'components/connection.php';
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    $cpassword = $_POST["cpassword"];
+    $register = $_POST["register"];
+    $not_match = "";
+
+    if (isset($register)) {
+        if ($password == $cpassword) {
+            $data = "INSERT INTO account(name, email, password) VALUE('$name', '$email', '$password')";
+            $connection->query($data);
+        } else {
+            $not_match="Passwords do not match. Please try again.";
+        }
+    }
+
+    ?>
+    <?php include 'components/header.php'; ?>
     <main class="container my-5">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-5">
@@ -19,24 +36,25 @@
                         <h3 class="card-title mb-0">Register</h3>
                     </div>
                     <div class="card-body">
-                        <form action="">
+                        <form action="" method="post">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                             </div>
                             <div class="mb-3">
                                 <label for="confirm_password" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="confirm_password" placeholder="Confirm your password" required>
+                                <input type="password" class="form-control" id="confirm_password" name="cpassword" placeholder="Confirm your password" required>
+                                <p class="text-danger pt-2"><?php echo $not_match; ?></p>
                             </div>
-                            <button type="submit" class="btn btn-dark w-100">Register</button>
+                            <button type="submit" class="btn btn-dark w-100" name="register">Register</button>
                         </form>
                     </div>
                     <div class="card-footer text-center">

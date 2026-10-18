@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <?php include 'components/connection.php'; ?>;
+    <?php include 'components/connection.php'; ?>
     <?php include 'components/header.php'; ?>
     <main class="container my-5">
         <div class="card">
