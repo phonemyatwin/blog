@@ -26,7 +26,7 @@
                             <a href="index.php" class="btn btn-outline-secondary btn-sm">Back</a>
                         </div>
                     </div>
-                    <img src="https://placehold.co/600x300" alt="Post image" class="card-img-top">
+                    <img src="media/<?= $post["image"]; ?>" alt="Post image" class="card-img-top">
                     <div class="card-body">
                         <div class="d-flex flex-wrap gap-3 mb-3">
                             <p class="card-text mb-0">Author by <strong><?= $post["author"]; ?></strong></p>

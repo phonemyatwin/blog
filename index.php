@@ -32,7 +32,7 @@
                                     <h4 class="card-title mb-0"><?= $post["title"] ?></h4>
                                 </div>
                                 <div class="card-body">
-                                    <img src="images/placeholder.svg" alt="Post image" class="card-img-top mb-3">
+                                    <img src="media/<?= $post["image"]; ?>" alt="Post image" class="card-img-top mb-3">
                                     <p class="card-text"><?= $post["author"] ?></p>
                                     <p class="card-text">Viewer - <span class="badge bg-success"><?= $post["viewer"] ?></span></p>
                                     <p class="card-text mb-0"><?= $post["content"] ?></p>

@@ -19,6 +19,7 @@
     if (isset($delete)) {
         $data = "DELETE FROM posts WHERE id=$id";
         $connection->query($data);
+        unlink('media/' . $post['image']);
         header("location:list.php");
     }
     ?>

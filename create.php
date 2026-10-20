@@ -14,11 +14,12 @@
     $title = $_POST["title"];
     $author = $_POST["author"];
     $viewer = $_POST["viewer"];
-    $image = $_POST["image"];
+    $image = time() . '_' . $_FILES['image']['name']; //1
     $content = $_POST["content"];
     $create = $_POST["create"];
 
     if (isset($create)) {
+        move_uploaded_file($_FILES['image']['tmp_name'], 'media/' . $image);
         $data = "INSERT INTO posts(title, author, viewer, image, content) VALUE('$title', '$author', '$viewer', '$image', '$content')";
         $connection->query($data);
         header("location:list.php");
@@ -36,7 +37,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="" method="post">
+                        <form action="" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="title" class="form-label">Title</label>
                                 <input type="text" class="form-control" name="title" id="title" placeholder="Enter post title" required>

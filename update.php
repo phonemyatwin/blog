@@ -16,15 +16,27 @@
     $post = $raw_data->fetch_assoc();
 
     $update = $_POST["update"];
-    if(isset($update)){
+    if (isset($update)) {
         $title = $_POST["title"];
         $author = $_POST["author"];
         $viewer = $_POST["viewer"];
-        $image = $_POST["image"];
         $content = $_POST["content"];
 
-        $data= "UPDATE posts SET title = '$title', author = '$author', viewer = '$viewer', image = '$image', content = '$content' WHERE id=$id";
-        $connection -> query($data);
+        $old_image = $post["image"];
+        $new_image = time() . '_' . $_FILES['image']['name'];
+
+        if ($new_image) {
+            $image = $new_image;
+            if (file_exists('media/' . $old_image)) {
+                unlink('media/' . $old_image);
+            }
+            move_uploaded_file($_FILES['image']['tmp_name'], 'media/' . $image);
+        } else {
+            $image = $old_image;
+        }
+
+        $data = "UPDATE posts SET title = '$title', author = '$author', viewer = '$viewer', image = '$image', content = '$content' WHERE id=$id";
+        $connection->query($data);
         header("location:list.php");
     }
     ?>
@@ -40,7 +52,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="" method="post">
+                        <form action="" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="title" class="form-label">Title</label>
                                 <input type="text" class="form-control" name="title" id="title" value="<?= $post["title"]; ?>" required>
