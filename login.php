@@ -18,8 +18,9 @@
         $remember = $_POST["remember"];
         $login = $_POST["login"];
         $not_match = "";
+        $hashed_password= hash("md5", $password);
         if (isset($login)) {
-            if ($email == $account["email"] && $password == $account["password"]) {
+            if ($email == $account["email"] && $hashed_password == $account["password"]) {
                 if (isset($remember)) {
                     setcookie("c_email", $email, time() + 60 * 999999999);
                     setcookie("c_password", $password, time() + 60 * 999999999);

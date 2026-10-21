@@ -16,10 +16,11 @@
     $cpassword = $_POST["cpassword"];
     $register = $_POST["register"];
     $not_match = "";
+    $hashed_password = hash("md5", $password);
 
     if (isset($register)) {
         if ($password == $cpassword) {
-            $data = "INSERT INTO account(name, email, password) VALUE('$name', '$email', '$password')";
+            $data = "INSERT INTO account(name, email, password) VALUE('$name', '$email', '$hashed_password')";
             $connection->query($data);
             header("location:login.php");
         } else {
