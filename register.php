@@ -16,15 +16,25 @@
     $cpassword = $_POST["cpassword"];
     $register = $_POST["register"];
     $not_match = "";
-    $hashed_password = hash("md5", $password);
+    $alr_exists = "";
+    // $hashed_password = hash("md5", $password);
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
 
     if (isset($register)) {
-        if ($password == $cpassword) {
-            $data = "INSERT INTO account(name, email, password) VALUE('$name', '$email', '$hashed_password')";
-            $connection->query($data);
-            header("location:login.php");
+        $data = "SELECT * FROM account WHERE email ='$email' ";
+        $raw_data = $connection->query($data);
+        $account = $raw_data->fetch_array();
+        if ($email != $account["email"]) {
+            if ($password == $cpassword) {
+                $data = "INSERT INTO account(name, email, password) VALUE('$name', '$email', '$hashed_password')";
+                $connection->query($data);
+                header("location:login.php");
+            } else {
+                $not_match = "Passwords do not match. Please try again.";
+            }
         } else {
-            $not_match="Passwords do not match. Please try again.";
+            $alr_exists = "This email is already existed.";
         }
     }
 
@@ -54,7 +64,8 @@
                             <div class="mb-3">
                                 <label for="confirm_password" class="form-label">Confirm Password</label>
                                 <input type="password" class="form-control" id="confirm_password" name="cpassword" placeholder="Confirm your password" required>
-                                <p class="text-danger pt-2"><?php echo $not_match; ?></p>
+                                <p class="text-danger pt-2"><?= $alr_exists ?></p>
+                                <p class="text-danger pt-2"><?= $not_match ?></p>
                             </div>
                             <button type="submit" class="btn btn-dark w-100" name="register">Register</button>
                         </form>

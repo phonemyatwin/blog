@@ -10,15 +10,17 @@
 
 <body>
     <?php include 'components/connection.php';
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    $remember = $_POST["remember"];
+    $login = $_POST["login"];
+    $not_match = "";
     $data = "SELECT * FROM account";
     $raw_data = $connection->query($data);
     while ($account = $raw_data->fetch_assoc()):
-        $email = $_POST["email"];
-        $password = $_POST["password"];
-        $remember = $_POST["remember"];
-        $login = $_POST["login"];
-        $not_match = "";
-        $hashed_password= hash("md5", $password);
+
+        // $hashed_password= hash("md5", $password);
+        $hashed_password = password_verify($password, $account["password"]);
         if (isset($login)) {
             if ($email == $account["email"] && $hashed_password == $account["password"]) {
                 if (isset($remember)) {
